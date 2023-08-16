@@ -1,4 +1,4 @@
-policy_module(networkd_up, 1.3)
+policy_module(networkd_up, 1.4)
 
 gen_require(`
   type init_t;
@@ -9,6 +9,7 @@ gen_require(`
   type selinux_config_t;
   type mnt_t;
   type etc_t;
+  type ifconfig_t;
 ')
 allow init_t unlabeled_t:dir mounton;
 allow systemd_networkd_t selinux_config_t:dir search;
@@ -18,3 +19,6 @@ allow init_t systemd_networkd_t:process noatsecure;
 allow init_t systemd_resolved_runtime_t:dir mounton;
 allow init_t systemd_resolved_t:process noatsecure;
 allow systemd_resolved_t mnt_t:dir {search getattr read watch};
+
+## for administrative purposes
+allow ifconfig_t mnt_t:dir {search};
