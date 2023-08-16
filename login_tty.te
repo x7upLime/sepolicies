@@ -1,0 +1,42 @@
+policy_module(login_tty, 1.6)
+
+gen_require(`
+  type sshd_t;
+  type sysadm_t;
+  type init_t;
+  type systemd_sessions_t;
+  type systemd_logind_t;
+  type mnt_t;
+  type proc_t;
+  type shadow_t;
+  type staff_t;
+  type getty_t;
+  type local_login_t;
+')
+allow sysadm_t init_t:fd use;
+allow sshd_t shadow_t:file {read open getattr};
+allow sshd_t self:process {getcap setcap };
+allow sshd_t mnt_t:dir {search getattr};
+allow sshd_t proc_t:filesystem {getattr};
+allow sshd_t self:capability {net_admin};
+allow sshd_t staff_t:process {noatsecure rlimitinh siginh};
+allow init_t sshd_t:process {siginh noatsecure};
+
+allow init_t systemd_sessions_t:process {noatsecure};
+allow init_t systemd_logind_t:process {noatsecure siginh};
+allow systemd_logind_t mnt_t:dir {search getattr};
+allow systemd_logind_t proc_t:filesystem {getattr};
+#allow init_t shadow_t:file {read open};
+
+### local login denials
+allow getty_t local_login_t:process {noatsecure rlimitinh siginh};
+allow local_login_t shadow_t:file {read open getattr};
+allow local_login_t self:capability {net_admin};
+allow local_login_t sysadm_t:process {noatsecure rlimitinh siginh};
+
+## this one is blocked by a neverallow rule
+#allow init_t shadow_t:file {read open};
+
+## allow agetty_t to access... stuff
+allow init_t getty_t:process {noatsecure};
+allow getty_t mnt_t:dir {search};
