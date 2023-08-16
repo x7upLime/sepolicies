@@ -1,4 +1,4 @@
-policy_module(login_tty, 1.10)
+policy_module(login_tty_pty, 1.0)
 
 gen_require(`
   type sshd_t;
@@ -7,7 +7,6 @@ gen_require(`
   type mnt_t;
   type proc_t;
   type shadow_t;
-  type staff_t;
   type getty_t;
   type local_login_t;
   type kernel_t;
