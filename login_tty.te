@@ -1,4 +1,4 @@
-policy_module(login_tty, 1.7)
+policy_module(login_tty, 1.8)
 
 gen_require(`
   type sshd_t;
@@ -13,6 +13,7 @@ gen_require(`
   type getty_t;
   type local_login_t;
   type kernel_t;
+  type kmod_t;
 ')
 allow sysadm_t init_t:fd use;
 allow sshd_t shadow_t:file {read open getattr};
@@ -44,3 +45,4 @@ allow getty_t mnt_t:dir {search};
 
 ## dunno what it is... but without tty login does not work
 allow kernel_t mnt_t:dir {search};
+allow kmod_t mnt_t:dir {search};
