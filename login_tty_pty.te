@@ -20,7 +20,6 @@ allow sysadm_t init_t:fd use;
 
 ## allow sshd to be alive
 allow sshd_t mnt_t:dir {search getattr};
-allow init_t sshd_t:process {siginh noatsecure};
 
 ## allow sshd to use keys
 allow ssh_keygen_t mnt_t:dir {search};
@@ -29,8 +28,11 @@ allow ssh_keygen_t mnt_t:dir {search};
 ## every login attempt would be incorrect
 ### Login program is impersonated by local_login_t for tty login
 ### and by sshd_t for logins via pty(ssh sessions)
-allow local_login_t shadow_t:file {read open getattr};
-allow sshd_t shadow_t:file {read open getattr};
+#    allow local_login_t shadow_t:file {read open getattr};
+#    allow sshd_t shadow_t:file {read open getattr};
+# [!!] Those above should not be needed if all the "systemd"
+#      entries are removed from /etc/nsswitch.conf
+#      There are such entries for group passwd gshadow shadow
  
 ## allow agetty_t to access... stuff
 ## I guess this permits the allocation of a tty for the 
