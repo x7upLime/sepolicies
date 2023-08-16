@@ -1,7 +1,0 @@
-policy_module(journal_en, 1.0)
-gen_require(type init_t;)
-gen_require(type syslogd_t;)
-gen_require(type mnt_t;)
-
-allow init_t syslogd_t:process {noatsecure siginh};
-allow syslogd_t mnt_t:dir {search getattr};
