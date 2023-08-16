@@ -1,7 +1,8 @@
-policy_module(login_tty_pty, 1.0)
+policy_module(login_tty_pty, 1.1)
 
 gen_require(`
   type sshd_t;
+  type ssh_keygen_t;
   type sysadm_t;
   type init_t;
   type mnt_t;
@@ -20,6 +21,9 @@ allow sysadm_t init_t:fd use;
 ## allow sshd to be alive
 allow sshd_t mnt_t:dir {search getattr};
 allow init_t sshd_t:process {siginh noatsecure};
+
+## allow sshd to use keys
+allow ssh_keygen_t mnt_t:dir {search};
 
 ## without the login program having access to the shadow file,
 ## every login attempt would be incorrect

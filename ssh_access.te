@@ -1,9 +1,0 @@
-policy_module(ssh_access, 1.0)
-
-gen_require(`
-  type ssh_keygen_t;
-  type mnt_t;
-')
-
-
-allow ssh_keygen_t mnt_t:dir {search};
