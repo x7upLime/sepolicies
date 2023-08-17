@@ -1,8 +1,0 @@
-policy_module(networkd_up, 1.4)
-
-gen_require(`
-  type init_t;
-  type unlabeled_t;
-')
-## shortcoming of the policy -- /proc is unlabeled
-allow init_t unlabeled_t:dir mounton;

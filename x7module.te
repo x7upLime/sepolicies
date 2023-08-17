@@ -1,0 +1,13 @@
+policy_module(x7module, 1.0)
+
+gen_require(`
+  type sysadm_t;
+  type unlabeled_t;
+  type init_t;
+')
+
+## shortcoming of the policy -- /proc is unlabeled
+allow init_t unlabeled_t:dir mounton;
+
+## without this line it is impossible to login via tty
+allow sysadm_t init_t:fd use;
